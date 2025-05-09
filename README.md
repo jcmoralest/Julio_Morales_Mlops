@@ -28,24 +28,26 @@ Diseñar un **sistema de diagnóstico automatizado** que, a partir de los sínto
 
 ## 🗂️ Estructura del Proyecto
 
+```bash
 diagnostico-enfermedades/
- ├── app/
-  │   ├── main.py                 # Lógica principal de la API (FastAPI)
-  │   ├── diagnostico.py          # Función de clasificación simulada
-  │   ├── models.py               # Definición de esquemas (Pydantic)
-  │   └── templates/
-  │       └── index.html          # Interfaz web opcional (formulario médico)
-  │
- ├── tests/
-  │   └── test_diagnostico.py     # Pruebas unitarias para la lógica de diagnóstico
- │
- ├── Dockerfile                  # Imagen Docker para ejecución local
- ├── requirements.txt            # Dependencias del proyecto (FastAPI, Uvicorn, etc.)
- ├── README.md                   # Instrucciones detalladas del proyecto
- ├── .gitignore                  # Archivos a ignorar por Git
-  └── docs/
-      └── especificacion.md       # Propósito, alcance, supuestos y notas técnicas
+├── app/
+│   ├── main.py                 # Lógica principal de la API (FastAPI)
+│   ├── diagnostico.py          # Función de clasificación simulada
+│   ├── models.py               # Definición de esquemas (Pydantic)
+│   └── templates/
+│       └── index.html          # Interfaz web opcional (formulario médico)
+│
+├── tests/
+│   └── test_diagnostico.py     # Pruebas unitarias para la lógica de diagnóstico
+│
+├── Dockerfile                  # Imagen Docker para ejecución local
+├── requirements.txt            # Dependencias del proyecto (FastAPI, Uvicorn, etc.)
+├── README.md                   # Instrucciones detalladas del proyecto
+├── .gitignore                  # Archivos a ignorar por Git
+└── docs/
+    └── especificacion.md       # Propósito, alcance, supuestos y notas técnicas
 
+```
 ---
 
 ## 🚀 Extras
