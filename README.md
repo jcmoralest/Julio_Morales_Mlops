@@ -45,3 +45,11 @@ diagnostico-enfermedades/
  ├── .gitignore                  # Archivos a ignorar por Git
   └── docs/
       └── especificacion.md       # Propósito, alcance, supuestos y notas técnicas
+
+---
+
+## 🚀 Extras
+
+CI/CD (.github/workflows/test.yml): Automatización de pruebas al hacer push/pull request.
+
+
