@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Médico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        #formContainer {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            width: 60%;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333333;
+            text-align: center;
+        }
+
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <div id="formContainer">
+        <h2>Formulario de Diagnóstico</h2>
+        <form id="diagnosticoForm">
+            <!-- Preguntas iniciales Prediagnostico-->
+            <label>a. Fiebre:</label>
+            <input type="number" name="fiebre">
+
+            <label>b. Tos:</label>
+            <input type="number" name="tos">
+
+            <label>c. Dolor:</label>
+            <input type="number" name="dolor">
+
+            <!-- Nuevas preguntas -->
+            <label>1. En una escala del 1 al 10, ¿qué tan saludable te consideras?</label>
+            <input type="number" name="saludable" min="1" max="10">
+
+            <label>2. ¿Actualmente, sufres de alguna enfermedad crónica?</label>
+            <input type="radio" name="cronica" value="Sí"> Sí
+            <input type="radio" name="cronica" value="No"> No
+
+            <label>3. ¿Tienes alguna enfermedad o condición hereditaria?</label>
+            <input type="checkbox" name="hereditaria" value="Presión arterial alta"> Presión arterial alta<br>
+            <input type="checkbox" name="hereditaria" value="Diabetes"> Diabetes<br>
+            <input type="checkbox" name="hereditaria" value="Hemofilia"> Hemofilia<br>
+            <input type="checkbox" name="hereditaria" value="Talasemia"> Talasemia<br>
+            <input type="checkbox" name="hereditaria" value="Huntington"> Huntington<br>
+            <input type="checkbox" name="hereditaria" value="Otro"> Otro (Por favor especifica)<br>
+            <textarea name="hereditaria_otro" placeholder="Especifica aquí"></textarea>
+
+            <label>4. ¿Estás acostumbrado a las drogas y al alcohol?</label>
+            <input type="radio" name="drogas_alcohol" value="Sí, a ambos"> Sí, a ambos<br>
+            <input type="radio" name="drogas_alcohol" value="Sólo a las drogas"> Sólo a las drogas<br>
+            <input type="radio" name="drogas_alcohol" value="Sólo al alcohol"> Sólo al alcohol<br>
+            <input type="radio" name="drogas_alcohol" value="No estoy acostumbrado a ninguno"> No estoy acostumbrado a ninguno<br>
+
+            <!-- Más preguntas -->
+            <label>5. ¿Con qué frecuencia te haces un chequeo médico?</label>
+            <select name="frecuencia_chequeo">
+                <option value="Una vez cada 3 meses">Una vez cada 3 meses</option>
+                <option value="Una vez cada 6 meses">Una vez cada 6 meses</option>
+                <option value="Una vez al año">Una vez al año</option>
+                <option value="Sólo cuando sea necesario">Sólo cuando sea necesario</option>
+                <option value="Nunca lo hago">Nunca lo hago</option>
+                <option value="Otros">Otros</option>
+            </select>
+
+            <label>6. En general, ¿cómo calificas a los hospitales locales de tu área?</label>
+            <input type="radio" name="calificacion_hospitales" value="Excelente"> Excelente<br>
+            <input type="radio" name="calificacion_hospitales" value="Por encima de la media"> Por encima de la media<br>
+            <input type="radio" name="calificacion_hospitales" value="Promedio"> Promedio<br>
+            <input type="radio" name="calificacion_hospitales" value="Por debajo de la media"> Por debajo de la media<br>
+            <input type="radio" name="calificacion_hospitales" value="Muy pobre"> Muy pobre<br>
+
+            <label>7. ¿En general, cómo evaluarías tu salud?</label>
+            <input type="radio" name="evaluacion_salud" value="En buen estado de salud"> En buen estado de salud (Sin enfermedad, ni discapacidad)<br>
+            <input type="radio" name="evaluacion_salud" value="Estado de salud medio"> Estado de salud medio con una discapacidad física (Enfermedad o discapacidad leve)<br>
+            <input type="radio" name="evaluacion_salud" value="Discapacidad física moderada"> Discapacidad física moderada (Requiere un tratamiento sustancial)<br>
+            <input type="radio" name="evaluacion_salud" value="Discapacidad física severa"> Discapacidad física severa (Requiere un tratamiento extensivo)<br>
+            <input type="radio" name="evaluacion_salud" value="Totalmente impedido físicamente"> Totalmente impedido físicamente (Confinado a la cama)<br>
+
+            <label>8. En tu opinión, ¿a qué capacidad puedes realizar tus actividades cotidianas?</label>
+            <input type="radio" name="capacidad_actividades" value="Excelente capacidad"> Excelente capacidad<br>
+            <input type="radio" name="capacidad_actividades" value="Buena capacidad"> Buena capacidad<br>
+            <input type="radio" name="capacidad_actividades" value="Capacidad moderada"> Capacidad moderada<br>
+            <input type="radio" name="capacidad_actividades" value="Deterioro grave de la capacidad"> Deterioro grave de la capacidad<br>
+            <input type="radio" name="capacidad_actividades" value="Deterioro total de la capacidad"> Deterioro total de la capacidad<br>
+
+            <label>9. En las últimas 24 horas, ¿qué diferentes tipos de medicamentos has tomado?</label>
+            <textarea name="medicamentos_tomados" placeholder="Escribe aquí los medicamentos que has tomado"></textarea>
+
+            <label>10. ¿Cuántos medicamentos te ha recetado tu médico en las últimas 24 horas?</label>
+            <input type="radio" name="medicamentos_recetados" value="1"> 1<br>
+            <input type="radio" name="medicamentos_recetados" value="2"> 2<br>
+            <input type="radio" name="medicamentos_recetados" value="3"> 3<br>
+            <input type="radio" name="medicamentos_recetados" value="4"> 4<br>
+            <input type="radio" name="medicamentos_recetados" value="5"> 5<br>
+            <input type="radio" name="medicamentos_recetados" value="Más de 5"> Más de 5<br>
+            <input type="radio" name="medicamentos_recetados" value="Ninguno"> Ninguno<br>
+            
+            <label>11. En las últimas 24 horas, ¿cómo te has tomado la medicina?</label>
+            <input type="radio" name="toma_medicina" value="Sin ayuda"> Sin ayuda (en la dosis correcta y en el momento adecuado)<br>
+            <input type="radio" name="toma_medicina" value="Con algo de ayuda"> Con algo de ayuda (alguien prepara el medicamento o le recuerda que lo tome)<br>
+            <input type="radio" name="toma_medicina" value="Completamente incapaz de hacerlo"> Completamente incapaz de hacerlo<br>
+            <input type="radio" name="toma_medicina" value="Otros"> Otros<br>
+
+            <label>12. Por favor, indica qué tan de acuerdo estás con la declaración: El seguro médico es barato para ti.</label>
+            <input type="radio" name="seguro_barato" value="Completamente en desacuerdo"> Completamente en desacuerdo<br>
+            <input type="radio" name="seguro_barato" value="Algo en desacuerdo"> Algo en desacuerdo<br>
+            <input type="radio" name="seguro_barato" value="Neutral"> Neutral<br>
+            <input type="radio" name="seguro_barato" value="Un poco de acuerdo"> Un poco de acuerdo<br>
+            <input type="radio" name="seguro_barato" value="Completamente de acuerdo"> Completamente de acuerdo<br>
+
+            <label>13. ¿Alguno de los miembros de tu familia han sido excluidos de la cobertura después del diagnóstico de alguna enfermedad?</label>
+            <input type="radio" name="exclusion_cobertura" value="Sí"> Sí<br>
+            <input type="radio" name="exclusion_cobertura" value="No"> No<br>
+
+            <label>14. ¿La falta de cobertura de seguro de salud te ha hecho considerar una de las siguientes opciones?</label>
+            <input type="checkbox" name="falta_cobertura" value="No asistir a una cita con el médico"> No asistir a una cita con el médico<br>
+            <input type="checkbox" name="falta_cobertura" value="Cancelar una cita con el médico"> Cancelar una cita con el médico<br>
+            <input type="checkbox" name="falta_cobertura" value="Posponer una cita con el médico"> Posponer una cita con el médico<br>
+            <input type="checkbox" name="falta_cobertura" value="No comprar medicamentos"> No comprar medicamentos<br>
+            <input type="checkbox" name="falta_cobertura" value="Retraso en el tratamiento"> Retraso en el tratamiento<br>
+            <input type="checkbox" name="falta_cobertura" value="N/A"> N/A<br>
+            <button type="submit">Enviar</button>
+        </form>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+    document.getElementById("diagnosticoForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Capturar los valores del formulario
+        const formData = new FormData(e.target);
+        const datos = {};
+        let camposIncompletos = false;
+
+        // Validar que todos los campos estén completos
+        formData.forEach((value, key) => {
+            if (!value.trim()) {
+                camposIncompletos = true;
+            }
+
+            if (!datos[key]) {
+                datos[key] = value;
+            } else {
+                // Manejar múltiples valores (checkboxes)
+                if (!Array.isArray(datos[key])) {
+                    datos[key] = [datos[key]];
+                }
+                datos[key].push(value);
+            }
+        });
+
+        if (camposIncompletos) {
+            alert("Por favor, completa todos los campos obligatorios.");
+            return;
+        }
+
+        try {
+            const res = await fetch("http://localhost:8000/diagnostico", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datos)
+            });
+            if (!res.ok) throw new Error("Error en la solicitud");
+            const json = await res.json();
+            document.getElementById("resultado").innerText = `Diagnóstico: ${json.diagnostico}`;
+        } catch (error) {
+            document.getElementById("resultado").innerText = "Error al obtener el diagnóstico.";
+        }
+    });
+    </script>
+</body>
+</html>
