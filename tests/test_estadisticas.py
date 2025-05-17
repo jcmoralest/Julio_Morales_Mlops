@@ -17,9 +17,6 @@ def test_prediccion_y_estadisticas():
     # Verifica que la última predicción registrada sea la esperada
     assert estadisticas["fecha_ultima_prediccion"] is not None
     assert estadisticas["ultimas_5_predicciones"][-1]["categoria"] == resultado
-    print("Ultima predicción registrada:", estadisticas["ultimas_5_predicciones"][-1])
-    print("Conteo por categoría:", estadisticas["conteo_por_categoria"])
-    print("Fecha de la última predicción:", estadisticas["fecha_ultima_prediccion"])
 
     sintomas = {"fiebre": 8, "tos": 8, "dolor": 7}
     resultado = simular_prediccion(sintomas)
@@ -28,19 +25,12 @@ def test_prediccion_y_estadisticas():
     # Verifica que la última predicción registrada sea la esperada
     assert estadisticas["fecha_ultima_prediccion"] is not None
     assert estadisticas["ultimas_5_predicciones"][-1]["categoria"] == resultado
-    print("Ultima predicción registrada:", estadisticas["ultimas_5_predicciones"][-1])
-    print("Conteo por categoría:", estadisticas["conteo_por_categoria"])
-    print("Fecha de la última predicción:", estadisticas["fecha_ultima_prediccion"])
 
     sintomas = {"fiebre": 5, "tos": 5, "dolor": 5}
     resultado = simular_prediccion(sintomas)
     registrar_prediccion(resultado, sintomas)
     estadisticas = leer_estadisticas()
-    
-    print("Ultima predicción registrada:", estadisticas["ultimas_5_predicciones"][-1])
-    print("Conteo por categoría:", estadisticas["conteo_por_categoria"])
-    print("Fecha de la última predicción:", estadisticas["fecha_ultima_prediccion"])
-    
+
     # Verifica que la última predicción registrada sea la esperada
     assert estadisticas["fecha_ultima_prediccion"] is not None
     assert estadisticas["ultimas_5_predicciones"][-1]["categoria"] == resultado
