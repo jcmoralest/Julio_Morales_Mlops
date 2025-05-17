@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Dict
 from fastapi.responses import JSONResponse
+import json
 
 app = FastAPI()
 LOG_DIR = "logs"
@@ -16,24 +17,24 @@ def diagnostico_sintomas(sintomas):
 
     puntuacion_total = sum(sintomas.values())
 
-    if puntuacion_total < 5:
+    if puntuacion_total <= 5:
         return "NO ENFERMO"
-    elif puntuacion_total < 15:
+    elif puntuacion_total <= 15:
         return "ENFERMEDAD LEVE"
-    elif puntuacion_total < 25:
+    elif puntuacion_total <= 25:
         return "ENFERMEDAD AGUDA"
     else:
         return "ENFERMEDAD CRÓNICA"
 
 def simular_prediccion(sintomas: dict) -> str:
     score = sum(sintomas.values())
-    if score < 5:
+    if score <= 5:
         return "SANO"
-    elif score < 10:
+    elif score <= 10:
         return "ENFERMEDAD LEVE"
-    elif score < 15:
+    elif score <= 15:
         return "ENFERMEDAD MODERADA"
-    elif score < 20:
+    elif score <= 20:
         return "ENFERMEDAD GRAVE"
     else:
         return "ENFERMEDAD TERMINAL"
@@ -41,10 +42,17 @@ def simular_prediccion(sintomas: dict) -> str:
 class SintomasInput(BaseModel):
     sintomas: Dict[str, int]
 
-def registrar_prediccion(categoria: str):
+def registrar_prediccion(categoria: str, sintomas: dict):
     fecha = datetime.now().isoformat()
+    suma = sum(sintomas.values())
+    registro = {
+        "fecha": fecha,
+        "sintomas": sintomas,
+        "suma": suma,
+        "categoria": categoria
+    }
     with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(f"{fecha},{categoria}\n")
+        f.write(json.dumps(registro) + "\n")
 
 def leer_estadisticas():
     if not os.path.exists(LOG_FILE):
@@ -58,9 +66,10 @@ def leer_estadisticas():
     conteo = {}
     predicciones = []
     for linea in lineas:
-        fecha, categoria = linea.split(",", 1)
+        registro = json.loads(linea)
+        categoria = registro["categoria"]
         conteo[categoria] = conteo.get(categoria, 0) + 1
-        predicciones.append({"fecha": fecha, "categoria": categoria})
+        predicciones.append(registro)
     ultimas_5 = predicciones[-5:] if len(predicciones) >= 5 else predicciones
     fecha_ultima = predicciones[-1]["fecha"] if predicciones else None
     return {
@@ -72,7 +81,7 @@ def leer_estadisticas():
 @app.post("/diagnostico")
 async def obtener_diagnostico(datos: SintomasInput):
     resultado = diagnostico_sintomas(datos.sintomas)
-    registrar_prediccion(resultado)
+    registrar_prediccion(resultado, datos.sintomas)
     return JSONResponse(content={"diagnostico": resultado})
 
 @app.get("/reporte")
