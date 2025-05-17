@@ -1,5 +1,33 @@
 # Diagnóstico Médico Simulado
 
+# 🧠 Julio-MLOps  
+**Predicción de enfermedades en pacientes**
+
+---
+
+## 📌 Problema
+
+Dados los avances tecnológicos, en el campo de la medicina la cantidad de información que existe de los pacientes es muy abundante.  
+Sin embargo, para algunas enfermedades no tan comunes, llamadas *huérfanas*, los datos que existen escasean.  
+
+🔍 Se pretende construir un modelo que sea capaz de predecir, dados los datos de síntomas de un paciente, si es posible o no que este sufra de alguna enfermedad.  
+Esto se requiere tanto para:
+
+- Enfermedades **comunes** (con muchos datos disponibles)
+- Enfermedades **huérfanas** (con pocos datos disponibles)
+
+---
+
+## 🎯 Propósito
+
+Diseñar un **sistema de diagnóstico automatizado** que, a partir de los síntomas ingresados por un médico, pueda **clasificar el estado de salud** de un paciente en función del riesgo de enfermedad.
+
+✅ El objetivo es apoyar la toma de decisiones clínicas tanto en el caso de enfermedades comunes como huérfanas.  
+✅ Se utilizará una lógica interpretativa simulada (no ML real) para asegurar accesibilidad y comprensión.  
+✅ El sistema debe ser fácilmente ejecutable localmente mediante tecnologías accesibles como **Docker**.
+
+---
+
 ## Descripción
 Este proyecto simula un modelo de diagnóstico médico. Dado un conjunto de síntomas (mínimo 3), retorna una clasificación simple:
 - NO ENFERMO
@@ -35,31 +63,7 @@ curl -X POST http://localhost:8000/diagnostico \
 ## Se agregaron mas preguntas al formulario, estas se pueden usar y validar a futuro ,
 ## una vez se mejore e implementen los modelos.
 
-    # 🧠 Julio-MLOps  
-**Predicción de enfermedades en pacientes**
 
----
-
-## 📌 Problema
-
-Dados los avances tecnológicos, en el campo de la medicina la cantidad de información que existe de los pacientes es muy abundante.  
-Sin embargo, para algunas enfermedades no tan comunes, llamadas *huérfanas*, los datos que existen escasean.  
-
-🔍 Se pretende construir un modelo que sea capaz de predecir, dados los datos de síntomas de un paciente, si es posible o no que este sufra de alguna enfermedad.  
-Esto se requiere tanto para:
-
-- Enfermedades **comunes** (con muchos datos disponibles)
-- Enfermedades **huérfanas** (con pocos datos disponibles)
-
----
-
-## 🎯 Propósito
-
-Diseñar un **sistema de diagnóstico automatizado** que, a partir de los síntomas ingresados por un médico, pueda **clasificar el estado de salud** de un paciente en función del riesgo de enfermedad.
-
-✅ El objetivo es apoyar la toma de decisiones clínicas tanto en el caso de enfermedades comunes como huérfanas.  
-✅ Se utilizará una lógica interpretativa simulada (no ML real) para asegurar accesibilidad y comprensión.  
-✅ El sistema debe ser fácilmente ejecutable localmente mediante tecnologías accesibles como **Docker**.
 
 ---
 
