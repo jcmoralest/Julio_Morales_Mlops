@@ -1,1 +1,3 @@
-{"fecha": "2025-05-17T13:57:33.493826", "sintomas": {"fiebre": 8, "tos": 8, "dolor": 8}, "suma": 24, "categoria": "ENFERMEDAD TERMINAL"}
+{"fecha": "2025-05-17T14:38:29.048697", "sintomas": {"fiebre": 3, "tos": 2, "dolor": 2}, "suma": 7, "categoria": "ENFERMEDAD LEVE"}
+{"fecha": "2025-05-17T14:38:29.088095", "sintomas": {"fiebre": 8, "tos": 8, "dolor": 7}, "suma": 23, "categoria": "ENFERMEDAD TERMINAL"}
+{"fecha": "2025-05-17T14:38:29.162621", "sintomas": {"fiebre": 5, "tos": 5, "dolor": 5}, "suma": 15, "categoria": "ENFERMEDAD MODERADA"}
