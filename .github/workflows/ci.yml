@@ -3,6 +3,10 @@ name: CI/CD
 on:
   pull_request:
 
+permissions:
+  pull-requests: write
+  issues: write
+
 jobs:
   comment-pr:
     runs-on: ubuntu-latest
