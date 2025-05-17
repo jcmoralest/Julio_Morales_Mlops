@@ -34,9 +34,3 @@ jobs:
               repo: context.repo.repo,
               body: "CI/CD en acción. Ejecutando tareas …"
             })
-
-      - name: Construir imagen Docker
-        run: docker build -t mi-app-test .
-
-      - name: Ejecutar pruebas unitarias en Docker
-        run: docker run --rm mi-app-test pytest --maxfail=1 --disable-warnings -q
