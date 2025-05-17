@@ -10,3 +10,6 @@ pydantic==1.10.7
 # Dependencias adicionales
 numpy==1.24.3
 pandas==2.0.1
+
+# Dependencias para las pruebas
+pytest==7.3.1
