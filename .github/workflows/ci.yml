@@ -8,7 +8,7 @@ permissions:
   issues: write
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository }}:latest
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/j_morales_mlops_u2:latest
 
 jobs:
   comment-pr:
