@@ -1,4 +1,8 @@
 name: CI/CD
+description: |
+  Este flujo de trabajo se activa en cada pull request y ejecuta pruebas unitarias.
+  Si las pruebas son exitosas, se deja un comentario en el pull request indicando que el CI/CD ha terminado con éxito.
+  Si las pruebas fallan, se deja un comentario indicando que el CI/CD ha terminado con error.
 
 on:
   pull_request:
