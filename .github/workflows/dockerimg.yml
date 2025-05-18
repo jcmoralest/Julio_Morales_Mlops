@@ -17,8 +17,8 @@ jobs:
         with:
           IMAGE_NAME: 'test-docker-action'
           TAG: 'my-optional-tag-name'
-          DOCKERFILE_PATH: 'argo/gpu.Dockerfile'
-          BUILD_CONTEXT: 'argo/'
+          DOCKERFILE_PATH: 'Dockerfile'
+          BUILD_CONTEXT: '.'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
