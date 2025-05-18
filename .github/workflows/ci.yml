@@ -82,3 +82,4 @@ jobs:
 
       - name: Ejecutar pruebas unitarias (verificación final)
         run: pytest --maxfail=1 --disable-warnings -q
+        
