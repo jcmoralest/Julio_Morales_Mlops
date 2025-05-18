@@ -23,7 +23,7 @@ jobs:
 
       - name: Iniciar servidor en segundo plano
         run: |
-          nohup python app.py &
+          nohup python main.py &
           sleep 5
 
       - name: Ejecutar pruebas
