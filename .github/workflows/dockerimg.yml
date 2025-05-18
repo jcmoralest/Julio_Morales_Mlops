@@ -1,6 +1,6 @@
 name: Docker Image CI/CD
 on:
-  push:
+  pull_request_target:
     branches:
       - main
       
@@ -52,3 +52,5 @@ jobs:
             IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/predictor-enfermedades
             docker build -t $IMAGE_NAME:latest .
             docker push $IMAGE_NAME:latest
+            echo "The docker image is hosted at ghcr.io/${{ github.repository_owner }}/predictor-enfermedades:latest"
+           
