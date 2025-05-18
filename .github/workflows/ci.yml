@@ -7,9 +7,6 @@ permissions:
   pull-requests: write
   issues: write
 
-env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/j_morales_mlops_u2:latest
-
 jobs:
   comment-pr:
     runs-on: ubuntu-latest
@@ -66,20 +63,3 @@ jobs:
               repo: context.repo.repo,
               body: "CI/CD terminado con error."
             })
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
-
-      - name: Build Docker image
-        run: docker build -t $IMAGE_NAME .
-
-      - name: Push Docker image to GHCR
-        run: docker push $IMAGE_NAME
-
-      - name: Ejecutar pruebas unitarias (verificación final)
-        run: pytest --maxfail=1 --disable-warnings -q
-
