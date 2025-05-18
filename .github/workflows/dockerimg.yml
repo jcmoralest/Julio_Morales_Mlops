@@ -47,7 +47,17 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/predictor-enfermedades
-          docker build -t $IMAGE_NAME:latest .
-          docker push $IMAGE_NAME:latest
+          echo "-----------------------------------------------------"
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/predictor-enfermedades          
+          echo "-----------------------------------------------------"
+          echo "Docker image built and pushed to $IMAGE_NAME:latest"
           echo "Docker image pushed to $IMAGE_NAME:latest"
+          echo "-----------------------------------------------------"
+          echo "Building Docker image..."
+          echo "-----------------------------------------------------"
+          docker build -t $IMAGE_NAME:latest .
+          echo "-----------------------------------------------------"
+          echo "Pushing Docker image to GitHub Container Registry..."
+          echo "-----------------------------------------------------"
+          docker push $IMAGE_NAME:latest
+          
