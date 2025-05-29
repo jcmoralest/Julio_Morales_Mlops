@@ -4,13 +4,17 @@ import shap
 import pandas as pd
 from loguru import logger
 from sklearn.preprocessing import StandardScaler
+import os
 
 # Cargar configuraciones
-with open("config.yaml", "r") as file:
+CONFIG_PATH = "../../config.yaml"
+with open(CONFIG_PATH, "r") as file:
     config = yaml.safe_load(file)
 
-# Cargar modelo
+# Cargar modelo - Actualizar ruta relativa
 MODEL_PATH = config["model"]["path"]
+if not os.path.isabs(MODEL_PATH):
+    MODEL_PATH = os.path.join(os.path.dirname(__file__), "../..", MODEL_PATH)
 MODEL = joblib.load(MODEL_PATH)
 
 # Preprocesamiento simple

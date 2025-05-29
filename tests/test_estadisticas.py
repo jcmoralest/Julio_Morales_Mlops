@@ -7,7 +7,7 @@ log_path = os.path.join("logs", "predicciones.log")
 if os.path.exists(log_path):
     os.remove(log_path)
 
-from main import simular_prediccion, registrar_prediccion, leer_estadisticas
+from src.api.main import simular_prediccion, registrar_prediccion, leer_estadisticas
 
 def test_prediccion_y_estadisticas():
     sintomas = {"fiebre": 3, "tos": 2, "dolor": 2}

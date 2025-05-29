@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
-from main import simular_prediccion
+from src.api.main import simular_prediccion
 
 def test_categoria_sano():
     sintomas = {"fiebre": 1, "tos": 1, "dolor": 1}  # suma = 3

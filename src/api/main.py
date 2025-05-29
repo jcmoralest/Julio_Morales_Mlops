@@ -1,7 +1,17 @@
+import os
+import json
+from datetime import datetime
 from fastapi import FastAPI, Request
+from pydantic import BaseModel
+from typing import Dict
 from fastapi.responses import JSONResponse
 from loguru import logger
-from pipeline import run_diagnosis
+from ..model.pipeline import run_diagnosis
+
+# Actualizar rutas relativas para logs
+LOG_DIR = "../../logs"
+LOG_FILE = os.path.join(LOG_DIR, "predicciones.log")
+os.makedirs(LOG_DIR, exist_ok=True)
 
 app = FastAPI(title="Sistema de Diagnóstico Médico")
 

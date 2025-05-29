@@ -10,8 +10,8 @@ from sklearn.preprocessing import StandardScaler
 from loguru import logger
 
 # ------------------- CONFIGURACIONES -------------------
-DATA_PATH = "data/dataset_enfermedades.csv"
-MODEL_OUTPUT_PATH = "models/modelo_entrenado.pkl"
+DATA_PATH = "../../data/dataset_enfermedades.csv"
+MODEL_OUTPUT_PATH = "../../models/modelo_entrenado.pkl"
 EXPERIMENT_NAME = "DiagnosticoMedicoML"
 TARGET_COL = "diagnostico"
 
