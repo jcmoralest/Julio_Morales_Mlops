@@ -1,90 +1,173 @@
-import os
+# src/api/main.py
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+from typing import Dict, List, Optional
+import logging
 from datetime import datetime
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import Dict
-from fastapi.responses import JSONResponse
-import json
+import mlflow
+import joblib
 
-app = FastAPI()
-LOG_DIR = "logs"
-LOG_FILE = os.path.join(LOG_DIR, "predicciones.log")
-os.makedirs(LOG_DIR, exist_ok=True)
+from src.ml.models.common_diseases import CommonDiseaseModel
+from src.ml.models.rare_diseases import RareDiseaseModel
+from src.monitoring.metrics import ModelMetrics
+from src.monitoring.logging_config import setup_logging
 
-def diagnostico_sintomas(sintomas):
-    if not isinstance(sintomas, dict) or len(sintomas) < 3:
-        return "Error: se requieren al menos 3 síntomas como diccionario."
+# Setup
+app = FastAPI(
+    title="Sistema de Diagnóstico ML",
+    description="API para predicción de enfermedades comunes y huérfanas",
+    version="2.0.0"
+)
 
-    puntuacion_total = sum(sintomas.values())
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    if puntuacion_total <= 5:
-        return "NO ENFERMO"
-    elif puntuacion_total <= 15:
-        return "ENFERMEDAD LEVE"
-    elif puntuacion_total <= 25:
-        return "ENFERMEDAD AGUDA"
-    else:
-        return "ENFERMEDAD CRÓNICA"
+# Setup logging
+setup_logging()
+logger = logging.getLogger(__name__)
 
-def simular_prediccion(sintomas: dict) -> str:
-    score = sum(sintomas.values())
-    if score <= 5:
-        return "SANO"
-    elif score <= 10:
-        return "ENFERMEDAD LEVE"
-    elif score <= 15:
-        return "ENFERMEDAD MODERADA"
-    elif score <= 20:
-        return "ENFERMEDAD GRAVE"
-    else:
-        return "ENFERMEDAD TERMINAL"
+# Modelos globales
+common_model = CommonDiseaseModel()
+rare_model = RareDiseaseModel()
+metrics_tracker = ModelMetrics()
 
-class SintomasInput(BaseModel):
-    sintomas: Dict[str, int]
-
-def registrar_prediccion(categoria: str, sintomas: dict):
-    fecha = datetime.now().isoformat()
-    suma = sum(sintomas.values())
-    registro = {
-        "fecha": fecha,
-        "sintomas": sintomas,
-        "suma": suma,
-        "categoria": categoria
-    }
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(json.dumps(registro) + "\n")
-
-def leer_estadisticas():
-    if not os.path.exists(LOG_FILE):
-        return {
-            "conteo_por_categoria": {},
-            "ultimas_5_predicciones": [],
-            "fecha_ultima_prediccion": None
+# Pydantic models
+class SymptomInput(BaseModel):
+    patient_id: str = Field(..., description="ID único del paciente")
+    symptoms: Dict[str, int] = Field(
+        ..., 
+        description="Síntomas con intensidad 1-5",
+        example={
+            "fiebre": 4,
+            "dolor_cabeza": 3,
+            "fatiga": 5
         }
-    with open(LOG_FILE, "r", encoding="utf-8") as f:
-        lineas = [line.strip() for line in f if line.strip()]
-    conteo = {}
-    predicciones = []
-    for linea in lineas:
-        registro = json.loads(linea)
-        categoria = registro["categoria"]
-        conteo[categoria] = conteo.get(categoria, 0) + 1
-        predicciones.append(registro)
-    ultimas_5 = predicciones[-5:] if len(predicciones) >= 5 else predicciones
-    fecha_ultima = predicciones[-1]["fecha"] if predicciones else None
+    )
+    patient_age: Optional[int] = Field(None, ge=0, le=120)
+    medical_history: Optional[List[str]] = Field(None)
+
+class DiagnosisResponse(BaseModel):
+    patient_id: str
+    primary_prediction: str
+    confidence: float
+    alternative_predictions: Dict[str, float]
+    recommendations: List[str]
+    model_used: str
+    timestamp: datetime
+    processing_time_ms: int
+
+@app.on_event("startup")
+async def startup_event():
+    """Inicializar modelos al arrancar"""
+    try:
+        # Cargar modelos pre-entrenados si existen
+        common_model.load_model("src/data/models")
+        logger.info("Modelo de enfermedades comunes cargado")
+    except:
+        logger.warning("No se encontró modelo pre-entrenado para enfermedades comunes")
+    
+    try:
+        rare_model.load_model("src/data/models")
+        logger.info("Modelo de enfermedades huérfanas cargado")
+    except:
+        logger.warning("No se encontró modelo pre-entrenado para enfermedades huérfanas")
+
+@app.post("/v2/diagnosis", response_model=DiagnosisResponse)
+async def get_diagnosis(symptoms_data: SymptomInput):
+    """Endpoint principal de diagnóstico con ML real"""
+    start_time = datetime.now()
+    
+    try:
+        # Validar síntomas
+        if len(symptoms_data.symptoms) < 3:
+            raise HTTPException(
+                status_code=400, 
+                detail="Se requieren al menos 3 síntomas"
+            )
+        
+        # Determinar qué modelo usar basado en el patrón de síntomas
+        symptom_score = sum(symptoms_data.symptoms.values())
+        
+        # Lógica de routing de modelos
+        if symptom_score > 15 or len(symptoms_data.symptoms) > 8:
+            # Patrón complejo -> probar modelo de enfermedades huérfanas
+            rare_prediction = rare_model.predict(symptoms_data.symptoms)
+            
+            if rare_prediction['confidence'] > 0.5:
+                model_used = "rare_disease_model"
+                primary_prediction = rare_prediction['prediction']
+                confidence = rare_prediction['confidence']
+                alternatives = rare_prediction.get('similarities', {})
+                recommendations = [
+                    "Consultar especialista inmediatamente",
+                    "Realizar pruebas específicas para enfermedad huérfana"
+                ]
+            else:
+                # Fallback a modelo común
+                common_prediction = common_model.predict(symptoms_data.symptoms)
+                model_used = "common_disease_model"
+                primary_prediction = common_prediction['prediction']
+                confidence = common_prediction['confidence']
+                alternatives = common_prediction['probabilities']
+                recommendations = ["Seguimiento médico general"]
+        else:
+            # Patrón simple -> modelo de enfermedades comunes
+            common_prediction = common_model.predict(symptoms_data.symptoms)
+            model_used = "common_disease_model"
+            primary_prediction = common_prediction['prediction']
+            confidence = common_prediction['confidence']
+            alternatives = common_prediction['probabilities']
+            recommendations = ["Tratamiento sintomático", "Descanso y hidratación"]
+        
+        # Calcular tiempo de procesamiento
+        processing_time = (datetime.now() - start_time).total_seconds() * 1000
+        
+        # Log para monitoreo
+        metrics_tracker.log_prediction(
+            prediction=primary_prediction,
+            confidence=confidence,
+            processing_time_ms=processing_time,
+            model_used=model_used
+        )
+        
+        # Respuesta
+        response = DiagnosisResponse(
+            patient_id=symptoms_data.patient_id,
+            primary_prediction=primary_prediction,
+            confidence=confidence,
+            alternative_predictions=alternatives,
+            recommendations=recommendations,
+            model_used=model_used,
+            timestamp=datetime.now(),
+            processing_time_ms=int(processing_time)
+        )
+        
+        logger.info(f"Diagnóstico completado para paciente {symptoms_data.patient_id}")
+        return response
+        
+    except Exception as e:
+        logger.error(f"Error en diagnóstico: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/health")
+async def health_check():
+    """Health check para monitoreo"""
     return {
-        "conteo_por_categoria": conteo,
-        "ultimas_5_predicciones": ultimas_5,
-        "fecha_ultima_prediccion": fecha_ultima
+        "status": "healthy",
+        "timestamp": datetime.now(),
+        "models_loaded": {
+            "common_disease": common_model.model is not None,
+            "rare_disease": len(rare_model.support_embeddings) > 0
+        }
     }
 
-@app.post("/diagnostico")
-async def obtener_diagnostico(datos: SintomasInput):
-    resultado = diagnostico_sintomas(datos.sintomas)
-    registrar_prediccion(resultado, datos.sintomas)
-    return JSONResponse(content={"diagnostico": resultado})
-
-@app.get("/reporte")
-async def obtener_reporte():
-    estadisticas = leer_estadisticas()
-    return JSONResponse(content=estadisticas)
+@app.get("/metrics")
+async def get_metrics():
+    """Métricas del modelo para monitoreo"""
+    return metrics_tracker.get_current_metrics()

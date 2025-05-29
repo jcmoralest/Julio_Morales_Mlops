@@ -1,0 +1,17 @@
+# docker/Dockerfile.training
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Instalar dependencias ML
+COPY requirements-training.txt .
+RUN pip install --no-cache-dir -r requirements-training.txt
+
+# Copiar código de entrenamiento
+COPY src/ml/ ./src/ml/
+COPY src/data/ ./src/data/
+COPY pipelines/ ./pipelines/
+
+ENV PYTHONPATH=/app
+
+CMD ["python", "pipelines/training_pipeline.py"]
