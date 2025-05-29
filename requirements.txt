@@ -1,15 +1,36 @@
-# Framework principal
-fastapi==0.95.2
+# API Web
+fastapi==0.110.0
+uvicorn[standard]==0.27.0
 
-# Servidor ASGI
-uvicorn[standard]==0.22.0
+# Machine Learning
+scikit-learn==1.4.2
+xgboost==2.0.3
+lightgbm==4.1.0
+pandas==2.2.2
+numpy==1.26.4
+
+# Few-shot / Transfer Learning
+transformers==4.41.1
+peft==0.10.0
+torch==2.3.0
+
+# Explicabilidad
+shap==0.45.0
+lime==0.2.0.1
 
 # Validación de datos
-pydantic==1.10.7
+great_expectations==0.18.12
+pyyaml==6.0.1
 
-# Dependencias adicionales
-numpy==1.24.3
-pandas==2.0.1
+# Versionado de modelos y datos
+mlflow==2.12.1
+dvc==3.50.0
 
-# Dependencias para las pruebas
-pytest==7.3.1
+# Monitoreo y logging
+loguru==0.7.2
+elasticsearch==8.13.0
+
+# Otros útiles
+joblib==1.4.0
+python-multipart==0.0.9
+requests==2.31.0

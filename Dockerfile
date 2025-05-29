@@ -1,21 +1,28 @@
-FROM python:3.11-bullseye
+# Imagen base
+FROM python:3.10-slim
 
+# Evita prompts interactivos
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Crear directorio de trabajo
 WORKDIR /app
 
-# Copiar solo los archivos necesarios
-COPY requirements.txt /app/
+# Copiar requerimientos y archivos fuente
+COPY requirements.txt .
+COPY main.py .
+COPY train_model.py .
+COPY pipeline.py .
+COPY config.yaml .
+COPY index.html ./static/
+COPY CHANGELOG.md .
+COPY README.md .
 
 # Instalar dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto del código
-COPY . /app
-
-# Exponer el puerto
+# Exponer el puerto del servicio FastAPI
 EXPOSE 8000
 
-# Usar una variable de entorno para el puerto
-ENV PORT=8000
-
-# Comando para iniciar la aplicación
+# Comando de inicio
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

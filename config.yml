@@ -1,0 +1,12 @@
+model:
+  path: "models/modelo_entrenado.pkl"
+
+data:
+  input_features:
+    - fiebre
+    - tos
+    - dolor
+    - saludable
+    - cronica
+    - evaluacion_salud
+    - capacidad_actividades
