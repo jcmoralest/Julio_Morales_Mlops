@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura MLOps - Diagnóstico Médico</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .architecture-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .layer {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #e1e5ff;
+            transition: all 0.3s ease;
+        }
+        
+        .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #4facfe;
+        }
+        
+        .layer-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4facfe;
+        }
+        
+        .component {
+            background: white;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #4facfe;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        
+        .component:hover {
+            background: #f0f8ff;
+            transform: translateX(5px);
+        }
+        
+        .tech-stack {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .data-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #fff;
+        }
+        
+        .hybrid-deployment {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .deployment-option {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .model-strategy {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        
+        .strategy-card {
+            background: white;
+            border: 2px solid #e74c3c;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        
+        .common-diseases {
+            border-color: #27ae60;
+        }
+        
+        .rare-diseases {
+            border-color: #e74c3c;
+        }
+        
+        .monitoring-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .metric-card {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .integration-points {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .integration-item {
+            background: #ecf0f1;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            border: 2px solid #3498db;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .architecture-diagram {
+                grid-template-columns: 1fr;
+            }
+            .hybrid-deployment {
+                grid-template-columns: 1fr;
+            }
+            .model-strategy {
+                flex-direction: column;
+                align-items: center;
+            }
+            .strategy-card {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Arquitectura MLOps End-to-End</h1>
+            <h2>Sistema de Diagnóstico Médico para Enfermedades Comunes y Huérfanas</h2>
+            <p>Pipeline completo con enfoque híbrido local/nube y few-shot learning</p>
+        </div>
+
+        <!-- Arquitectura Principal -->
+        <div class="architecture-diagram">
+            <div class="layer">
+                <div class="layer-title">📥 INGESTA DE DATOS</div>
+                <div class="component">
+                    <strong>Fuentes Múltiples</strong>
+                    <div class="tech-stack">Apache Kafka + Airflow</div>
+                </div>
+                <div class="component">
+                    <strong>EHR Systems</strong>
+                    <div class="tech-stack">HL7 FHIR + APIs</div>
+                </div>
+                <div class="component">
+                    <strong>ORPHANET Database</strong>
+                    <div class="tech-stack">Rare diseases registry</div>
+                </div>
+                <div class="component">
+                    <strong>Medical Literature</strong>
+                    <div class="tech-stack">PubMed + MEDLINE</div>
+                </div>
+                <div class="component">
+                    <strong>IoT Medical Devices</strong>
+                    <div class="tech-stack">Real-time streaming</div>
+                </div>
+            </div>
+
+            <div class="layer">
+                <div class="layer-title">🔧 PROCESAMIENTO</div>
+                <div class="component">
+                    <strong>Data Lake Storage</strong>
+                    <div class="tech-stack">Delta Lake + MinIO/S3</div>
+                </div>
+                <div class="component">
+                    <strong>Data Quality</strong>
+                    <div class="tech-stack">Great Expectations</div>
+                </div>
+                <div class="component">
+                    <strong>Feature Engineering</strong>
+                    <div class="tech-stack">Apache Spark + spaCy</div>
+                </div>
+                <div class="component">
+                    <strong>Synthetic Data</strong>
+                    <div class="tech-stack">CTGAN + SMOTE</div>
+                </div>
+                <div class="component">
+                    <strong>Medical NLP</strong>
+                    <div class="tech-stack">BioBERT + SNOMED CT</div>
+                </div>
+            </div>
+
+            <div class="layer">
+                <div class="layer-title">🤖 ENTRENAMIENTO ML</div>
+                <div class="component">
+                    <strong>Experiment Tracking</strong>
+                    <div class="tech-stack">MLflow + W&B</div>
+                </div>
+                <div class="component">
+                    <strong>Hyperparameter Tuning</strong>
+                    <div class="tech-stack">Optuna + Ray Tune</div>
+                </div>
+                <div class="component">
+                    <strong>Distributed Training</strong>
+                    <div class="tech-stack">Kubernetes Jobs</div>
+                </div>
+                <div class="component">
+                    <strong>Model Versioning</strong>
+                    <div class="tech-stack">DVC + MLflow Registry</div>
+                </div>
+                <div class="component">
+                    <strong>Few-shot Pipeline</strong>
+                    <div class="tech-stack">Meta-learning + MAML</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-flow">
+            <span>Datos Médicos</span>
+            <span class="arrow">→</span>
+            <span>Preprocesamiento</span>
+            <span class="arrow">→</span>
+            <span>Entrenamiento</span>
+            <span class="arrow">→</span>
+            <span>Validación</span>
+            <span class="arrow">→</span>
+            <span>Despliegue</span>
+        </div>
+
+        <!-- Estrategias de Modelos -->
+        <div class="model-strategy">
+            <div class="strategy-card common-diseases">
+                <h3>🏥 Enfermedades Comunes</h3>
+                <p><strong>Datos Abundantes</strong></p>
+                <ul style="text-align: left;">
+                    <li>XGBoost Ensemble</li>
+                    <li>Random Forest</li>
+                    <li>Neural Networks</li>
+                    <li>Meta-learner</li>
+                </ul>
+                <div class="tech-stack">Accuracy Target: >90%</div>
+            </div>
+            
+            <div class="strategy-card rare-diseases">
+                <h3>🔬 Enfermedades Huérfanas</h3>
+                <p><strong>Datos Escasos</strong></p>
+                <ul style="text-align: left;">
+                    <li>Few-shot Learning</li>
+                    <li>Prototypical Networks</li>
+                    <li>Transfer Learning</li>
+                    <li>Meta-learning (MAML)</li>
+                </ul>
+                <div class="tech-stack">5-50 casos por enfermedad</div>
+            </div>
+        </div>
+
+        <!-- Despliegue Híbrido -->
+        <div class="hybrid-deployment">
+            <div class="deployment-option">
+                <h3>💻 Despliegue Local</h3>
+                <h4>Recursos Bajos</h4>
+                <ul>
+                    <li><strong>Docker Compose:</strong> Containerización</li>
+                    <li><strong>FastAPI:</strong> API ligera</li>
+                    <li><strong>SQLite:</strong> Base datos local</li>
+                    <li><strong>ONNX Runtime:</strong> Inferencia optimizada</li>
+                    <li><strong>Streamlit:</strong> Interface simple</li>
+                </ul>
+                <p><strong>Requisitos:</strong> 4GB RAM, 2 cores, 10GB storage</p>
+            </div>
+
+            <div class="deployment-option">
+                <h3>☁️ Despliegue en Nube</h3>
+                <h4>Escalable</h4>
+                <ul>
+                    <li><strong>Kubernetes:</strong> Orquestación</li>
+                    <li><strong>API Gateway:</strong> Gestión APIs</li>
+                    <li><strong>Redis:</strong> Cache predicciones</li>
+                    <li><strong>Prometheus + Grafana:</strong> Monitoreo</li>
+                    <li><strong>Auto-scaling:</strong> Demanda variable</li>
+                </ul>
+                <p><strong>Beneficios:</strong> Escalabilidad automática, Alta disponibilidad</p>
+            </div>
+        </div>
+
+        <!-- Puntos de Integración -->
+        <h3 style="text-align: center; margin: 30px 0;">🔗 Puntos de Integración del Sistema</h3>
+        <div class="integration-points">
+            <div class="integration-item">
+                <strong>Sistemas EHR</strong><br>
+                HL7 FHIR APIs
+            </div>
+            <div class="integration-item">
+                <strong>Formularios Web</strong><br>
+                FastAPI + HTML
+            </div>
+            <div class="integration-item">
+                <strong>Dispositivos IoT</strong><br>
+                Kafka Streaming
+            </div>
+            <div class="integration-item">
+                <strong>Mobile Apps</strong><br>
+                REST APIs
+            </div>
+            <div class="integration-item">
+                <strong>Clinical Guidelines</strong><br>
+                Knowledge Base
+            </div>
+        </div>
+
+        <!-- Monitoreo y Observabilidad -->
+        <div class="monitoring-section">
+            <h3>📊 Monitoreo y Observabilidad</h3>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Performance</h4>
+                    <p>Accuracy, Latency, Throughput</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Data Quality</h4>
+                    <p>Drift Detection, Missing Values</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Business Metrics</h4>
+                    <p>Usage Patterns, Clinical Accuracy</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Alerting</h4>
+                    <p>Automated Alerts, SLA Monitoring</p>
+                </div>
+            </div>
+            
+            <h4 style="margin-top: 20px;">🔄 Re-entrenamiento Automático</h4>
+            <ul>
+                <li><strong>Trigger:</strong> Accuracy < 85% o Data Drift detectado</li>
+                <li><strong>Estrategia:</strong> Incremental para comunes, Meta-learning para huérfanas</li>
+                <li><strong>Validación:</strong> A/B Testing con médicos piloto</li>
+                <li><strong>Rollback:</strong> Automático si performance degrada</li>
+            </ul>
+        </div>
+
+        <!-- Consideraciones Especiales -->
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 30px;">
+            <h3>⚠️ Consideraciones Críticas</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h4>🏥 Clínicas</h4>
+                    <ul>
+                        <li>Validación con médicos especialistas</li>
+                        <li>Explicabilidad con SHAP/LIME</li>
+                        <li>Confidence scoring interpretable</li>
+                        <li>Audit trail completo</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>🔐 Regulatorias</h4>
+                    <ul>
+                        <li>Cumplimiento HIPAA/GDPR</li>
+                        <li>Estándares FDA/CE</li>
+                        <li>Encriptación end-to-end</li>
+                        <li>Backup y recovery</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beneficios Esperados -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h3>🎯 Beneficios Esperados del Sistema</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <h4>Enfermedades Comunes</h4>
+                    <p>• Accuracy >90%<br>• 40% reducción tiempo diagnóstico<br>• Soporte a médicos generales</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <h4>Enfermedades Huérfanas</h4>
+                    <p>• Identificación temprana<br>• Reducción diagnostic odyssey<br>• Network effect mejora continua</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <h4>Operacionales</h4>
+                    <p>• Despliegue flexible<br>• Escalabilidad automática<br>• Trazabilidad completa</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
